@@ -10,6 +10,7 @@ const JSON5 = require('json5');
 const xml2js = require('xml2js');
 
 const compare = require('./compare');
+const parse = require('./parse');
 const { Stubber } = require('./stubber');
 
 const utility = require('@tabit/utils');
@@ -30,7 +31,7 @@ const xmlParser = new xml2js.Parser({ explicitArray: false });
 
 const self = {
     compare: compare,
-    parse: require('./parse'),
+    parse: parse,
     Stubber: Stubber,
 
     verifyEqual(existing, newObj, done) {
@@ -501,7 +502,7 @@ const self = {
     },
 
     parseAndFakeTime(context, time, isUtc) {
-        let date = this.parseTime(context, time, isUtc);
+        let date = parse.parseTime(context, time, isUtc);
         this.fakeDateTime(context, date.getTime());
     },
 

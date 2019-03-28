@@ -1,6 +1,6 @@
 {
   "name": "@tabit/bdd-utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "utility functions for working with cucumber-js ",
   "main": "index.js",
   "scripts": {
