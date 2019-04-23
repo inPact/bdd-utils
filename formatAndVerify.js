@@ -29,7 +29,20 @@ const currencyRegex = /^\$-?\d+\.?\d{0,2}$/;
 
 const xmlParser = new xml2js.Parser({ explicitArray: false });
 
+const EntityResolver = {
+    _resolvers: {},
+
+    register(keys, resolver) {
+        [].concat(keys).forEach(key => this._resolvers[key] = resolver);
+    },
+
+    getValueResolver(key) {
+        return this._resolvers[key];
+    }
+};
+
 const self = {
+    entityResolver: EntityResolver,
     compare: compare,
     parse: parse,
     Stubber: Stubber,
@@ -335,16 +348,16 @@ const self = {
         if (valueResolverRegex.test(expected))
             key = valueResolverRegex.exec(expected)[1];
 
-        let strategy = context.getValueResolver(key);
+        let strategy = this.entityResolver.getValueResolver(key);
         if (!strategy && key.indexOf('.') > 0) {
             let path = key.split('.');
-            strategy = context.getValueResolver(path[path.length - 1])
+            strategy = this.entityResolver.getValueResolver(path[path.length - 1])
         }
         should.exist(strategy, `Could not find value-resolver for key "${key}"`);
 
         let entity = strategy(entityName, context, dataObject);
         should.exist(entity, `${key} value-resolver: Could not resolve entity "${entityName}"`);
-        (_.get(entity, path) != null).should.equal(true, `"${entityName}": Path "${path}" not found in entity ${JSON.stringify(entity, null, 2)}`);
+        (_.has(entity, path)).should.equal(true, `"${entityName}": Path "${path}" not found in entity ${JSON.stringify(entity, null, 2)}`);
 
         let value = _.get(entity, path);
 
@@ -892,4 +905,4 @@ function mergeRow(target, row) {
 
 self.verifyEqualAsync = Promise.promisify(self.verifyEqual);
 
-module.exports = _.assign(utility, self);
+module.exports = utility.append(self);

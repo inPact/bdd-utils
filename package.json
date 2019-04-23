@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/inPact/bdd-utils#readme",
   "dependencies": {
-    "@tabit/utils": "^1.2.0",
+    "@tabit/utils": "^1.2.2",
     "bluebird": "3.5.0",
     "chai": "3.4.1",
     "chalk": "1.1.3",
