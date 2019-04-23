@@ -9,8 +9,8 @@ describe('should include: ', function () {
         should.exist(utils.format);
     });
 
-    // it('all utility properties', async function () {
-    //     should.exist(utils.moredash);
-    //     should.exist(utils.getId);
-    // });
+    it('all utility properties', async function () {
+        should.exist(utils.moredash);
+        should.exist(utils.getId);
+    });
 });

@@ -892,4 +892,4 @@ function mergeRow(target, row) {
 
 self.verifyEqualAsync = Promise.promisify(self.verifyEqual);
 
-module.exports = self;
+module.exports = _.assign(utility, self);
