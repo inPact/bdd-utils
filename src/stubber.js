@@ -35,7 +35,7 @@ exports.Stubber = class Stubber {
 
         let func = function () {
             let message = arguments[arguments.length - 1];
-            context[`last${_.capitalize(methodName)}Request`] = context[`last${targetName}Request`] = message;
+            context[`last${_.upperFirst(methodName)}Request`] = context[`last${targetName}Request`] = message;
             debug(`captured "${methodName}" request to "${targetName}": ${JSON.stringify(message)}`);
             return _.isFunction(response) ? response(...arguments) : Promise.resolve(response);
         };

@@ -870,7 +870,7 @@ function keyToNewKey(key, { keyPartFormatter = x => _.camelCase(x), ...options }
     if (haveUnderScore && !options.hasKeyFormatter)
         newKey = '_' + newKey;
     if (options && options.capitalize)
-        newKey = _.capitalize(newKey);
+        newKey = _.upperFirst(newKey);
     return newKey;
 }
 

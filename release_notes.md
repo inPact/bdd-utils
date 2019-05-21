@@ -1,3 +1,6 @@
+## 1.2.4
+* lodash-4 migration: change 'capitalize' to 'upperFirst'
+
 ## 1.2.3
 * fix @tabit/utils method invocations
 
