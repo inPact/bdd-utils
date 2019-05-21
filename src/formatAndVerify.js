@@ -1,5 +1,4 @@
 // TODO: separate into format.js and verify.js
-const _ = require('lodash');
 const assert = require('assert');
 const expect = require('chai').expect;
 const should = require('chai').should();
@@ -12,9 +11,8 @@ const xml2js = require('xml2js');
 const compare = require('./compare');
 const parse = require('./parse');
 const { Stubber } = require('./stubber');
-
 const utility = require('@tabit/utils');
-const timeUtils = utility.time;
+const _ = utility.moredash;
 
 const resolveExpressionRegex = /{{(.*)}}/;
 /** @see https://regex101.com/r/4TYH3y/1 for details on this regex */
@@ -50,7 +48,7 @@ const self = {
     verifyEqual(existing, newObj, done) {
         let error = null;
         if (!_.isMatch(existing, newObj))
-            error = new Error(`new entity conflicts with existing one.\r\nExisting: ${utility.stringify(existing)}\r\nNew: ${utility.stringify(newObj)}`);
+            error = new Error(`new entity conflicts with existing one.\r\nExisting: ${_.stringify(existing)}\r\nNew: ${_.stringify(newObj)}`);
 
         if (done)
             return done(error, existing);
@@ -77,13 +75,13 @@ const self = {
         if (formatSubset && context)
             subset = this.formatExpectedObject(subset, context);
 
-        let nullsDictionary = this.filterObject(this.flattenObject(subset), (v) => v === null);
+        let nullsDictionary = _.filterObject(_.flattenObject(subset), (v) => v === null);
         let nonEmptyFields = _.keys(nullsDictionary).filter(k => _.get(object, k) != null);
 
         if (nonEmptyFields.length)
             return false;
 
-        _.keys(nullsDictionary).forEach(k => this.unset(subset, k));
+        _.keys(nullsDictionary).forEach(k => _.unset(subset, k));
 
         return _.isMatchWith(object, subset, (val, expected) => {
             if (expected === '**')
@@ -363,7 +361,7 @@ const self = {
 
         let value = _.get(entity, path);
 
-        if (utility.isObjectId(value))
+        if (_.isObjectId(value))
             value = value.toString();
 
         return value;
@@ -777,7 +775,7 @@ const self = {
      */
     utcToLocalTimeInt(context, utcTime) {
         let timezone = context.org.timezone || 'Asia/Jerusalem';
-        let localDate = timeUtils.getLocalTime(utcTime, timezone);
+        let localDate = _.time.getLocalTime(utcTime, timezone);
         return parseInt(localDate.format('HHmm'));
     },
 
@@ -841,8 +839,8 @@ const self = {
     },
 
     parseBoolean(s) {
-        if (utility.isTrue(s)) return true;
-        if (utility.isFalse(s)) return false;
+        if (_.isTrue(s)) return true;
+        if (_.isFalse(s)) return false;
     },
 
     isStubMethod(method) {

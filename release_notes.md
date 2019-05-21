@@ -1,3 +1,6 @@
+## 1.2.3
+* fix @tabit/utils method invocations
+
 ## 1.2.2
 * fix lodash-4 breaking-changes usages
 
