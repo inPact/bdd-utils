@@ -1,1 +1,1 @@
-module.exports = require('./formatAndVerify');
+module.exports = require('./src/formatAndVerify');

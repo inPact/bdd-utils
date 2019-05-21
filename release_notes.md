@@ -1,3 +1,6 @@
+## 1.2.2
+* fix lodash-4 breaking-changes usages
+
 ## 1.2.1
 * fix @tabit/utils reference
 

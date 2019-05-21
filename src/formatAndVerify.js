@@ -60,7 +60,7 @@ const self = {
     },
 
     assertObjectIncludes(fullObject, propertySubset, message) {
-        expect(_.pairs(fullObject), message || `${JSON.stringify(fullObject)} do not include ${JSON.stringify(propertySubset)}`).to.deep.include.members(_.pairs(propertySubset));
+        expect(_.toPairs(fullObject), message || `${JSON.stringify(fullObject)} do not include ${JSON.stringify(propertySubset)}`).to.deep.include.members(_.toPairs(propertySubset));
     },
 
     /**
