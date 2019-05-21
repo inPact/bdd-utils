@@ -85,7 +85,7 @@ const self = {
 
         _.keys(nullsDictionary).forEach(k => this.unset(subset, k));
 
-        return _.isMatch(object, subset, (val, expected) => {
+        return _.isMatchWith(object, subset, (val, expected) => {
             if (expected === '**')
                 return true;
 
@@ -325,7 +325,7 @@ const self = {
      */
     formatExpectedObject(expected, context) {
         let mapped = this.format(expected, context, { minusAsNull: true, parseAll: false });
-        return _.omit(mapped, x => x == null);
+        return _.omitBy(mapped, x => x == null);
     },
 
     evalWithContext(js, context) {

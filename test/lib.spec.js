@@ -15,7 +15,7 @@ describe('should include: ', function () {
     });
 });
 
-describe('format: ', function () {
+describe('format should: ', function () {
     it('resolve value using resolver', async () => {
         utils.entityResolver.register(['data', 'info'],
             (name, context, data) => (data.info && data.info[name]) || (context.data && context.data[name]));
@@ -53,5 +53,14 @@ describe('format: ', function () {
                 extra: 'R'
             }
         ])
+    })
+});
+
+describe('formatExpectedObject should: ', function () {
+    it('remove nulls', async () => {
+        let expectedObject = { a: 'hi', b: null };
+        let res = utils.formatExpectedObject(expectedObject, {});
+        if (res.hasOwnProperty('b'))
+            should.fail();
     })
 });
