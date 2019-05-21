@@ -1,8 +1,8 @@
 const _ = require('@tabit/utils').moredash;
-const reflect = require('@tabit/utils/reflect');
+const { reflect } = require('@tabit/utils');
 const moment = require('moment-timezone');
 const chalk = require('chalk');
-const debug = require('debug')('ros:bdd');
+const debug = require('debug')('bdd');
 const parse = require('./parse');
 const regexRegex = /^\/(.*)\/$/;
 
@@ -78,7 +78,7 @@ module.exports = {
      */
     getMatchScore(source, other, context) {
         let matches = _.map(other, (otherVal, key) => this.valueMatches(source, key, otherVal, context));
-        let score = _.sum(matches, x => Number(x));
+        let score = _.sumSafe(matches);
         let diffs = matches.filter(x => !_.isBoolean(x) && !_.isNumber(x));
 
         return { score: score, diffs: diffs };

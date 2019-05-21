@@ -162,8 +162,10 @@ const self = {
             }
 
             if (options.saveLinks) {
-                if (link)
+                if (link) {
+                    (context.savedLinks || (context.savedLinks = {}))[link] = actual;
                     return { [link]: actual };
+                }
             } else
                 return actual;
         };
@@ -220,10 +222,10 @@ const self = {
      * @param source
      * @param table
      * @param context
-     * @param expectedCollectionName {String}
-     * @param validateCount {Boolean}
-     * @param formatOptions {Option}
-     * @param verifyOptions {Option}
+     * @param [expectedCollectionName] {String}
+     * @param [validateCount] {Boolean}
+     * @param [formatOptions] {Object}
+     * @param [verifyOptions] {Object}
      */
     verifySetMatchesTable(source, table, context, {
         expectedCollectionName,
@@ -412,7 +414,7 @@ const self = {
         let result = [];
         for (let i = 0; i < rows.length; i++) {
             let row = rows[i];
-            if (!!row[header])
+            if (!!row[header] || row[header] === 0)
                 result.push(row);
             else if (i > 0)
                 mergeRow(_.last(result), row);
@@ -624,6 +626,7 @@ const self = {
      * @param [options.plusAsExists]
      * @param [options.excludeMinuses]
      * @param [options.excludeFalsey]
+     * @param [options.excludeEmpty]
      * @param {function}[options.formatCustom] - custom format function for values.
      *        if any value is returned, it will be used as the formated value
      *        func(value, key, object, options) where:
@@ -695,6 +698,9 @@ const self = {
             return undefined;
 
         if (options.excludeFalsey && !val)
+            return undefined;
+
+        if (options.excludeEmpty && val === '')
             return undefined;
 
         return val;
@@ -904,5 +910,7 @@ function mergeRow(target, row) {
 }
 
 self.verifyEqualAsync = Promise.promisify(self.verifyEqual);
+self.entityResolver.register(['link'], (name, context) =>
+    context.savedLinks && context.savedLinks[name]);
 
-module.exports = utility.append(self);
+module.exports = utility.use(self);
