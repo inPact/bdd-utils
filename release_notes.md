@@ -1,3 +1,6 @@
+## 1.2.1
+* fix @tabit/utils reference
+
 ## 1.2.0
 * 'verifySetIncludes' with 'saveLinks' option now saves links on context in 'savedLinks' property
 * bdd-utils now includes default entity-resolver for resolving saved links using "link" or "LINK" resolver-headers,

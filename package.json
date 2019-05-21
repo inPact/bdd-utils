@@ -1,6 +1,6 @@
 {
   "name": "@tabit/bdd-utils",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "utility functions for working with cucumber-js ",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/inPact/bdd-utils#readme",
   "dependencies": {
-    "@tabit/utils": "../utils/",
+    "@tabit/utils": "^2.1.0",
     "bluebird": "3.5.0",
     "chai": "3.4.1",
     "chalk": "1.1.3",
