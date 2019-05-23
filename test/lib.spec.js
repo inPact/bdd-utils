@@ -53,6 +53,24 @@ describe('format should: ', function () {
                 extra: 'R'
             }
         ])
+    });
+
+    it('resolve multiple values using resolver', async () => {
+        utils.entityResolver.register(['data', 'info'],
+            (name, context, data) => (data.info && data.info[name]) || (context.data && context.data[name]));
+
+        let objToFormat = { data: '["[data](blue)._id","[data](red)._id"]' };
+
+        let context = {
+            data: {
+                blue: { _id: 'B', example: 'sky' },
+                red: { _id: 'R', software: 'hat' }
+            }
+        };
+
+        let formatted = utils.format(objToFormat, context);
+
+        formatted.should.deep.equal({ data: ['B', 'R'] })
     })
 });
 

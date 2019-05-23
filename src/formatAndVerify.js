@@ -39,7 +39,7 @@ const EntityResolver = {
     }
 };
 
-const self = {
+let self = {
     entityResolver: EntityResolver,
     compare: compare,
     parse: parse,
@@ -870,7 +870,7 @@ function keyToNewKey(key, { keyPartFormatter = x => _.camelCase(x), ...options }
     if (haveUnderScore && !options.hasKeyFormatter)
         newKey = '_' + newKey;
     if (options && options.capitalize)
-        newKey = _.upperFirst(newKey);
+        newKey = _.capitalize(newKey);
     return newKey;
 }
 
