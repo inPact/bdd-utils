@@ -58,7 +58,7 @@ let self = {
     },
 
     assertObjectIncludes(fullObject, propertySubset, message) {
-        expect(_.toPairs(fullObject), message || `${JSON.stringify(fullObject)} do not include ${JSON.stringify(propertySubset)}`).to.deep.include.members(_.toPairs(propertySubset));
+        expect(_.pairs(fullObject), message || `${JSON.stringify(fullObject)} do not include ${JSON.stringify(propertySubset)}`).to.deep.include.members(_.pairs(propertySubset));
     },
 
     /**
@@ -83,7 +83,7 @@ let self = {
 
         _.keys(nullsDictionary).forEach(k => _.unset(subset, k));
 
-        return _.isMatchWith(object, subset, (val, expected) => {
+        return _.isMatch(object, subset, (val, expected) => {
             if (expected === '**')
                 return true;
 
@@ -323,7 +323,7 @@ let self = {
      */
     formatExpectedObject(expected, context) {
         let mapped = this.format(expected, context, { minusAsNull: true, parseAll: false });
-        return _.omitBy(mapped, x => x == null);
+        return _.omit(mapped, x => x == null);
     },
 
     evalWithContext(js, context) {
