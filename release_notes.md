@@ -1,13 +1,16 @@
-## 1.2.4
+# 2.0.0
+* abandon lodash-4; revert to lodash-4 and @tabit/utils@3.0.0
+
+### 1.2.4
 * lodash-4 migration: change 'capitalize' to 'upperFirst'
 
-## 1.2.3
+### 1.2.3
 * fix @tabit/utils method invocations
 
-## 1.2.2
+### 1.2.2
 * fix lodash-4 breaking-changes usages
 
-## 1.2.1
+### 1.2.1
 * fix @tabit/utils reference
 
 ## 1.2.0
@@ -20,6 +23,6 @@ e.g., \[link](A)._id
 * 'format': 'mergeHeadless' option no longer treats zeros as headless
 * 'format': added 'excludeEmpty' option to ignore empty cells (rather than all "falsey" values)
 
-## 1.1.0
+# 1.1.0
 * Utility functions and moredash now exported along with bdd-utils
 * migrated entity-resolvers into bdd-utils
