@@ -534,12 +534,6 @@ let self = {
         return moment(iMightBe, moment.ISO_8601, true).isValid();
     },
 
-    diff(first, second) {
-        return _.reduce(first, (result, value, key) => {
-            return _.isEqual(value, second[key]) ? result : result.concat(key);
-        }, []);
-    },
-
     /**
      *
      * @param context {World} -- the test context
