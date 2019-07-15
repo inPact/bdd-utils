@@ -1,3 +1,6 @@
+# 2.1.0
+* format: support parsing to local time with "[local]" notation
+
 # 2.0.0
 * abandon lodash-4; revert to lodash-4 and @tabit/utils@3.0.0
 

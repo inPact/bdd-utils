@@ -22,7 +22,7 @@ const valueResolverRegex = /\[(.+)\]/;
 const regexRegex = /^\/(.*)\/$/;
 const floatRegex = /^-?\d+\.?\d*$/;
 const pathSeparatorsRegex = /[.\[]/;
-const localDateRegex = /^\[([\w_]+\/[\w_]+)\]\s+(.*)/;
+const localDateRegex = /^\[(local|[\w_]+\/[\w_]+)\]\s+(.*)/;
 const currencyRegex = /^\$-?\d+\.?\d{0,2}$/;
 
 const xmlParser = new xml2js.Parser({ explicitArray: false });
@@ -700,10 +700,13 @@ let self = {
 
     formatDate(val) {
         let parsed = localDateRegex.exec(val);
-        if (parsed)
-            return moment.tz(parsed[2], parsed[1]).toDate();
+        if (!parsed)
+            return moment.utc(val).toDate();
 
-        return moment.utc(val).toDate();
+        if (parsed[1] === 'local')
+            return moment(parsed[2]).toDate();
+
+        return moment.tz(parsed[2], parsed[1]).toDate();
     },
 
     /**
