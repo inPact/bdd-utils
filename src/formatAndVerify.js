@@ -22,7 +22,7 @@ const valueResolverRegex = /\[(.+)\]/;
 const regexRegex = /^\/(.*)\/$/;
 const floatRegex = /^-?\d+\.?\d*$/;
 const pathSeparatorsRegex = /[.\[]/;
-const localDateRegex = /^\[([\w_]+\/[\w_]+)\]\s+(.*)/;
+const localDateRegex = /^\[(local|[\w_]+\/[\w_]+)\]\s+(.*)/;
 const currencyRegex = /^\$-?\d+\.?\d{0,2}$/;
 
 const xmlParser = new xml2js.Parser({ explicitArray: false });
@@ -39,7 +39,7 @@ const EntityResolver = {
     }
 };
 
-const self = {
+let self = {
     entityResolver: EntityResolver,
     compare: compare,
     parse: parse,
@@ -58,7 +58,7 @@ const self = {
     },
 
     assertObjectIncludes(fullObject, propertySubset, message) {
-        expect(_.toPairs(fullObject), message || `${JSON.stringify(fullObject)} do not include ${JSON.stringify(propertySubset)}`).to.deep.include.members(_.toPairs(propertySubset));
+        expect(_.pairs(fullObject), message || `${JSON.stringify(fullObject)} do not include ${JSON.stringify(propertySubset)}`).to.deep.include.members(_.pairs(propertySubset));
     },
 
     /**
@@ -83,7 +83,7 @@ const self = {
 
         _.keys(nullsDictionary).forEach(k => _.unset(subset, k));
 
-        return _.isMatchWith(object, subset, (val, expected) => {
+        return _.isMatch(object, subset, (val, expected) => {
             if (expected === '**')
                 return true;
 
@@ -323,7 +323,7 @@ const self = {
      */
     formatExpectedObject(expected, context) {
         let mapped = this.format(expected, context, { minusAsNull: true, parseAll: false });
-        return _.omitBy(mapped, x => x == null);
+        return _.omit(mapped, x => x == null);
     },
 
     evalWithContext(js, context) {
@@ -534,12 +534,6 @@ const self = {
         return moment(iMightBe, moment.ISO_8601, true).isValid();
     },
 
-    diff(first, second) {
-        return _.reduce(first, (result, value, key) => {
-            return _.isEqual(value, second[key]) ? result : result.concat(key);
-        }, []);
-    },
-
     /**
      *
      * @param context {World} -- the test context
@@ -706,10 +700,13 @@ const self = {
 
     formatDate(val) {
         let parsed = localDateRegex.exec(val);
-        if (parsed)
-            return moment.tz(parsed[2], parsed[1]).toDate();
+        if (!parsed)
+            return moment.utc(val).toDate();
 
-        return moment.utc(val).toDate();
+        if (parsed[1] === 'local')
+            return moment(parsed[2]).toDate();
+
+        return moment.tz(parsed[2], parsed[1]).toDate();
     },
 
     /**
@@ -870,7 +867,7 @@ function keyToNewKey(key, { keyPartFormatter = x => _.camelCase(x), ...options }
     if (haveUnderScore && !options.hasKeyFormatter)
         newKey = '_' + newKey;
     if (options && options.capitalize)
-        newKey = _.upperFirst(newKey);
+        newKey = _.capitalize(newKey);
     return newKey;
 }
 
