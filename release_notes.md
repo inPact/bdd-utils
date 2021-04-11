@@ -1,3 +1,6 @@
+# NEXT
+* added wait-for-async-activities function; fixed rows-hash in verify-table-includes-object to our custom rows-hash with arrays-support
+
 # 2.1.0
 * format: support parsing to local time with "[local]" notation
 

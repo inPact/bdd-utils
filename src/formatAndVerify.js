@@ -248,7 +248,7 @@ let self = {
      */
     verifyObjectIncludesTable(source, table, context, { expectedCollectionName, message, formatOptions } = {}) {
         should.exist(source, expectedCollectionName);
-        let expected = this.formatAndCamelCase(table.rowsHash(), context, formatOptions);
+        let expected = this.formatAndCamelCase(this.rowsHash(table), context, formatOptions);
         return this.verifyObjectIncludes(source, expected, context, message);
     },
 
@@ -846,6 +846,12 @@ let self = {
 
     xmlToJson(xml) {
         return Promise.promisify(xmlParser.parseString)(xml);
+    },
+
+    async waitForAsyncActivitiesToFinish({ asyncWaitRatio = 1 } = {}) {
+        let waitMs = (parseInt(process.env.TEST_ASYNC_WAIT_TIME) || 250) * asyncWaitRatio;
+        console.info(`========== async wait time: ${waitMs} ms ==========`);
+        await Promise.delay(waitMs);
     }
 };
 
