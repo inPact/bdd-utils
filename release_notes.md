@@ -1,4 +1,4 @@
-# 2.2.0
+# 2.2.1 (due to a publish error)
 * added wait-for-async-activities function; fixed rows-hash in verify-table-includes-object to our custom rows-hash with arrays-support
 
 # 2.1.0
