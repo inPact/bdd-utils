@@ -68,4 +68,23 @@ describe('format should: ', function () {
 
         moment('2017-01-01 10:00').isSame(actual).should.equal(true);
     });
+
+    it('resolve values in strings', async () => {
+        utils.entityResolver.register(['colors'],
+            (name, context) => (context.colors && context.colors[name]));
+
+        let context = {
+            colors: {
+                B: { color: 'blue' },
+            }
+        };
+
+        let expected = { data: '/^hello [colors](B).color world$/' };
+        let formatted = utils.format(expected, context);
+
+        formatted.data.should.equal('/^hello blue world$/');
+
+        let actual = { data: 'hello blue world' };
+        utils.objectsMatch(actual, formatted).should.equal(true);
+    });
 });
