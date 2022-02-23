@@ -93,7 +93,8 @@ module.exports = {
      */
     valueMatches: function (source, key, expected, context, message) {
         if (!(key in source))
-            return false;
+            return `expected field "${chalk.bold(key)}" does not exist. ${(message ? ` -- ${message}` : '')} ` +
+                   `${chalk.dim(`(at ${reflect.getCallingFrame().toString()})`)}`;
 
         if (expected === '**')
             return true;

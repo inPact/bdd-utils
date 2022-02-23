@@ -16,5 +16,6 @@ describe('compare.getMatchScore should: ', function () {
 
         let match = compare.getMatchScore(actual, expected);
         match.score.should.equal(0);
+        match.diffs.length.should.equal(1);
     });
 });
