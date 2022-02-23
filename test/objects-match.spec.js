@@ -1,6 +1,5 @@
 const utils = require('../');
 const should = require('chai').should();
-const moment = require('moment');
 
 describe('objectsMatch should: ', function () {
     it('match using regex', async () => {
