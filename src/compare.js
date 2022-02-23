@@ -92,6 +92,9 @@ module.exports = {
      * Checks for true/false if expected is "true" or "false"
      */
     valueMatches: function (source, key, expected, context, message) {
+        if (!(key in source))
+            return false;
+
         if (expected === '**')
             return true;
 

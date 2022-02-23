@@ -9,4 +9,12 @@ describe('compare.getMatchScore should: ', function () {
         let match = compare.getMatchScore(goodData, expected);
         match.score.should.equal(1);
     });
+
+    it('reduce score for missing fields', async () => {
+        let actual = { wrongField: 'HELLO world' };
+        let expected = { expectedField: '**' };
+
+        let match = compare.getMatchScore(actual, expected);
+        match.score.should.equal(0);
+    });
 });
