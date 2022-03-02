@@ -18,8 +18,15 @@ const resolveExpressionRegex = /{{(.*)}}/;
 /** @see https://regex101.com/r/4TYH3y/1 for details on this regex */
 const resolveEntityRegex = /(?:"(.+)"|\((.+)\))\.(\w+)/;
 const valueAndEntityResolverRegex = /\[(.+)\](?:"(.+)"|\((.+)\))\.(\w+)/;
+const valueAndOrEntityResolverRegex = /(?:\[(.+)\])?(?:"(.+)"|\((.+)\))\.(\w+)/;
 const valueResolverRegex = /\[(.+)\]/;
-const regexRegex = /^\/(.*)\/$/;
+
+/**
+ * the "dgimsuy" in the following regex is the allowed regex flags according to MDN
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#advanced_searching_with_flags
+ * @type {RegExp}
+ */
+const regexRegex = /^\/(.+)\/(?:([dgimsuy])(?!\w*?\2)){0,7}$/;
 const floatRegex = /^-?\d+\.?\d*$/;
 const pathSeparatorsRegex = /[.\[]/;
 const localDateRegex = /^\[(local|[\w_]+\/[\w_]+)\]\s+(.*)/;
@@ -88,7 +95,8 @@ let self = {
                 return true;
 
             if (regexRegex.test(expected)) {
-                let regex = new RegExp(regexRegex.exec(expected)[1]);
+                let [, pattern, flags] = regexRegex.exec(expected);
+                let regex = new RegExp(pattern, flags);
                 return regex.test(val);
             }
 
@@ -332,12 +340,12 @@ let self = {
         }.call(context);
     },
 
-    replaceEntityValue(text, context) {
-        if (!valueAndEntityResolverRegex.test(text))
+    replaceEntityValue(text, context, { regex = valueAndEntityResolverRegex, key, obj } = {}) {
+        if (!regex.test(text))
             return text;
 
-        let resolved = this.resolveEntityValue(null, text, context);
-        return text.replace(valueAndEntityResolverRegex, resolved);
+        let resolved = this.resolveEntityValue(key, text, context, obj);
+        return text.replace(regex, resolved);
     },
 
     resolveEntityValue(key, expected, context, dataObject) {
@@ -672,7 +680,7 @@ let self = {
         }
 
         if (key && obj && options.context && resolveEntityRegex.test(val))
-            return this.resolveEntityValue(key, val, options.context, obj);
+            return this.replaceEntityValue(val, options.context, { regex: valueAndOrEntityResolverRegex, key, obj });
 
         if (options.excludeMinuses && val === '-')
             return undefined;

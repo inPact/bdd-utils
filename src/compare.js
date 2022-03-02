@@ -4,7 +4,7 @@ const moment = require('moment-timezone');
 const chalk = require('chalk');
 const debug = require('debug')('bdd');
 const parse = require('./parse');
-const regexRegex = /^\/(.*)\/$/;
+const regexRegex = /^\/(.+)\/(?:([dgimsuy])(?!\w*?\2)){0,7}$/;
 
 module.exports = {
     /**
@@ -92,6 +92,10 @@ module.exports = {
      * Checks for true/false if expected is "true" or "false"
      */
     valueMatches: function (source, key, expected, context, message) {
+        if (!(key in source))
+            return `expected field "${chalk.bold(key)}" does not exist. ${(message ? ` -- ${message}` : '')} ` +
+                   `${chalk.dim(`(at ${reflect.getCallingFrame().toString()})`)}`;
+
         if (expected === '**')
             return true;
 
@@ -122,7 +126,8 @@ module.exports = {
                 return expected == null ? true : explanation();
 
             if (regexRegex.test(expected)) {
-                let regex = new RegExp(regexRegex.exec(expected)[1]);
+                let [, pattern, flags] = regexRegex.exec(expected);
+                let regex = new RegExp(pattern, flags);
                 return regex.test(actualValue) ? true : explanation();
             }
 
