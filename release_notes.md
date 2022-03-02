@@ -1,3 +1,8 @@
+# 2.2.2
+* entity resolver now replaces entity values in strings, rather than replacing the entire string along with the surrounding text
+* missing fields are now correctly reported in the diff explanations
+* regex values now support flags
+
 # 2.2.1 (due to a publish error)
 * added wait-for-async-activities function; fixed rows-hash in verify-table-includes-object to our custom rows-hash with arrays-support
 
