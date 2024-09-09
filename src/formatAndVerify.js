@@ -536,6 +536,9 @@ let self = {
     },
 
     isDate(iMightBe) {
+        // Sometimes a number is getting here (a.k.a no `parseAll` but `parseDates`):
+        if (floatRegex.test(iMightBe)) return;
+
         if (iMightBe instanceof Date)
             return true;
 

@@ -2,6 +2,15 @@ const utils = require('../');
 const should = require('chai').should();
 const moment = require('moment');
 
+const notDates = new Map([
+    ['whole number (string 1)', '9876'],
+    ['whole number (string 2)', '2024'],
+    ['whole number (string 3)', '202401'],
+    ['whole number (number)', 9876],
+    ['float number (string)', '2024.01'],
+    ['float number (number)', 2024.01],
+]);
+
 describe('format should: ', function () {
     it('resolve value using resolver', async () => {
         utils.entityResolver.register(['data', 'info'],
@@ -40,6 +49,18 @@ describe('format should: ', function () {
                 extra: 'R'
             }
         ])
+    });
+
+    notDates.forEach((notDate, keyOfNumber) => {
+
+        it(`A ${keyOfNumber} should not be formatted as a date`, async () => {
+            const formatted = utils.format({ date: '2024-09-01', notDate }, {}, {
+                camelCase: false,
+                parseDates: true,
+            });
+
+            formatted.should.deep.equal({ date: new Date('2024-09-01'), notDate }); });
+
     });
 
     it('resolve multiple values using resolver', async () => {
