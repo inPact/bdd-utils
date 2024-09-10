@@ -51,16 +51,26 @@ describe('format should: ', function () {
         ])
     });
 
-    notDates.forEach((notDate, keyOfNumber) => {
+    notDates.forEach((notDate, nameOfNumber) => {
 
-        it(`A ${keyOfNumber} should not be formatted as a date`, async () => {
+        it(`A ${nameOfNumber} should not be formatted as a date`, async () => {
+
             const formatted = utils.format({ date: '2024-09-01', notDate }, {}, {
                 camelCase: false,
                 parseDates: true,
             });
 
-            formatted.should.deep.equal({ date: new Date('2024-09-01'), notDate }); });
+            formatted.should.deep.equal({ date: new Date('2024-09-01'), notDate });
+        });
+    });
 
+    it('should deal okay with floats', async () => {
+
+        const formatted = utils.format({ num: '$33.34' }, {}, {
+            parseAll: true,
+        });
+
+        formatted.should.deep.equal({ num: 3334 });
     });
 
     it('resolve multiple values using resolver', async () => {

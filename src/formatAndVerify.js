@@ -651,7 +651,8 @@ let self = {
 
         if (isOptionActive(options.parseCurrency, options.parseAll) && currencyRegex.test(val)) {
             let multiplier = (options.currencyToCents !== false) ? 100 : 1;
-            return this.tryParseFloat(val.replace('$', ''), multiplier);
+            const floatNum = this.tryParseFloat(val.replace('$', ''), multiplier);
+            if (_.isFinite(floatNum)) return Math.round(floatNum);
         }
 
         if (options.parseIntegerDates && moment(val, 'YYYYMMDD', true).isValid())
