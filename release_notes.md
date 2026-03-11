@@ -1,3 +1,6 @@
+# 3.0.6
+* undefined should not be considered a string in the verifier  
+
 # 2.2.2
 * entity resolver now replaces entity values in strings, rather than replacing the entire string along with the surrounding text
 * missing fields are now correctly reported in the diff explanations

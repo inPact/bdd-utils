@@ -299,7 +299,7 @@ let self = {
             this.validateTimesEqual(context, expected, actualValue, null, { key: key, explanation: explanation });
 
         else {
-            if ((actualValue === undefined) && (actualValue === expected))
+            if ((actualValue === undefined) && (actualValue === expected || expected === 'undefined'))
                 return;
 
             should.exist(actualValue, explanation);
